@@ -6,4 +6,5 @@ class Problem01(Problem):
 
 class Problem02(Problem):
     def solve(self):
+        return sum([i for i in fibs_up_to(4e6) if not i % 2])
 

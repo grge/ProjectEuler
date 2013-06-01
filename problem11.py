@@ -41,7 +41,6 @@ def iter_grid_products(grid, prod_length):
             diag_lr_cond = horz_cond and vert_cond
             diag_rl_cond = horz_cond and ( y >= prod_length - 1)
             if horz_cond: yield prod([ grid[y][x + i] for i in range(prod_length)]) 
-
             if vert_cond: yield prod([ grid[y + i][x] for i in range(prod_length)]) 
             if diag_lr_cond: yield prod([ grid[y + i][x + i] for i in range(prod_length)]) 
             if diag_rl_cond: yield prod([ grid[y - i][x + i] for i in range(prod_length)]) 
