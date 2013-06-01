@@ -1,7 +1,3 @@
-import re
-from pprint import pprint
-from operator import mul
-grid = '''
 08 02 22 97 38 15 00 40 00 75 04 05 07 78 52 12 50 77 91 08
 49 49 99 40 17 81 18 57 60 87 17 40 98 43 69 48 04 56 62 00
 81 49 31 73 55 79 14 29 93 71 40 67 53 88 30 03 49 13 36 65
@@ -22,27 +18,3 @@ grid = '''
 20 69 36 41 72 30 23 88 34 62 99 69 82 67 59 85 74 04 36 16
 20 73 35 29 78 31 90 01 74 31 49 71 48 86 81 16 23 57 05 54
 01 70 54 71 83 51 54 69 16 92 33 48 61 43 52 01 89 19 67 48
-'''
-whitespace = re.compile('r\s+')
-
-# split into cells
-grid = [re.split(r'\s', line) for line in re.split(r'\n', grid.strip())]
-# parse integers
-grid = map(lambda line : map(lambda element : int(element), line), grid)
-
-def iter_grid_products(grid, prod_length):
-    def prod(iterable):
-        return reduce(mul, iterable)
-
-    for y in range(len(grid)):
-        vert_cond = y < len(grid) - prod_length + 1
-        for x in range(len(grid[y])):
-            horz_cond = x < len(grid[y]) - prod_length + 1
-            diag_lr_cond = horz_cond and vert_cond
-            diag_rl_cond = horz_cond and ( y >= prod_length - 1)
-            if horz_cond: yield prod([ grid[y][x + i] for i in range(prod_length)]) 
-            if vert_cond: yield prod([ grid[y + i][x] for i in range(prod_length)]) 
-            if diag_lr_cond: yield prod([ grid[y + i][x + i] for i in range(prod_length)]) 
-            if diag_rl_cond: yield prod([ grid[y - i][x + i] for i in range(prod_length)]) 
-
-print(max([prod for prod in iter_grid_products(grid, 4)]))

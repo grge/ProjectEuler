@@ -1,33 +1,34 @@
 import os
-from math import sqrt
-from operator import mul
-from itertools import groupby
-from time import time
+import operator
+import functools
+import math
+import time
+import itertools
 
 class Problem(object):
     known_answer = None
-    data_path = os.path.join(os.path.dirname(__file__), 'data')
-
-    def __init__(self, data=None):
-        if data:
-            for filename in data:
-                self.data[filename] = open(os.path.join(self.data_path, filename), 'r').read()
 
     def solve(self):
         pass
 
-    def test():
-        t1 = time()
+    def test(self):
+        t1 = time.time()
         r = self.solve() 
-        t2 = time()
-        return (r, t2-t1, r == known_answer and known_answer)
-    
-def product(list):
-    return reduce(mul, list)
+        t2 = time.time()
+        return (r, t2-t1, r == self.known_answer)
 
+def data(filename):
+    def decorator(cls):
+        def new_init(self):
+            path = os.path.join(os.path.dirname(__file__), 'data')
+            self.data = open(os.path.join(path, filename), 'r').read()
+        cls.__init__ = new_init
+        return cls
+    return decorator
+    
 # returns i if n is the ith triangular number or False
 def is_triangular(n):
-    triangular_root = (sqrt(8 * n + 1) - 1)/2
+    triangular_root = (math.sqrt(8 * n + 1) - 1)/2
     if int(triangular_root) == triangular_root:
         return int(triangular_root)
     else:
@@ -38,6 +39,12 @@ def fibs_up_to(n):
     while a < n:
         yield a
         (a, b) = (b, a + b)
+
+def product(l):
+    return functools.reduce(operator.mul, l)
+
+def choose(n, k):
+    return product(range(1, n+1)) / (product(range(1, k+1))*product(range(1, n-k+1)))
 
 class sieve(object):
     def __init__(self, n=1000):
@@ -81,19 +88,19 @@ class sieve(object):
 
     def nth_prime(self, n):
         item = 2
-        for item in self.n_primes: pass
+        for item in self.n_primes(n): pass
         return item
 
     # sieve.factors(12) -> [2, 2, 3]
     def factors(self, n):
-        for i in range(1, int(sqrt(n)) + 1):
+        for i in range(1, int(math.sqrt(n)) + 1):
             if (not n % i) and self.is_prime(i):
                 return [i] + self.factors(n / i)
         return [n]
 
     # sieve.group_factors(12) -> [(2,2), (3,1)]
     def group_factors(self, n):
-        for p, group in groupby(self.factors(n)):
+        for p, group in itertools.groupby(self.factors(n)):
             yield p, len(list(group))
 
     def num_divisors(self, n):
