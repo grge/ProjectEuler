@@ -176,7 +176,6 @@ class Problem_17(Problem):
 @data('problem18')
 class Problem_18(Problem):
     known_answer = 1074
-    
     def solve(self):
         data = [list(map(int, re.split(' ', line))) for line in re.split('\n',self.data.strip())]
         for i in range(1,len(data)):
@@ -189,12 +188,47 @@ class Problem_18(Problem):
                     data[i][j] += max(data[i-1][j], data[i-1][j-1])
         return max(data[-1])
             
+class Problem_19(Problem):
+    known_answer = 171
+    def solve(self):
+        def sunday_the_first_generator():
+            start_day = 0
+            days_in_month = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+            for year in range(1900,2001):
+                leap = (not (year % 4)) and (year % 100) and (not (year % 400))
+                for month in range(0,12):
+                    if start_day % 7 == 6 and year > 1900: 
+                        yield year, month
+                    start_day += days_in_month[month] + {True:1, False:0}[leap and month==1]
+        return len(list(sunday_the_first_generator()))
 
-@data('problem67')
-class Problem_67(Problem_18):
-    known_answer = 7273
+
+class Problem_20(Problem):
+    def solve(self):
+        pass
+
+class Problem_21(Problem):
+    def solve(self):
+        pass
+
+class Problem_22(Problem):
+    def solve(self):
+        pass
+
+class Problem_23(Problem):
+    def solve(self):
+        pass
+
+class Problem_24(Problem):
+    def solve(self):
+        pass
 
 class Problem_28(Problem):
     known_answer = 669171001 
     def solve(self):
         return sum([(i+1)**2 * 4 - 6*i for i in range(2, 1001, 2)]) + 1
+
+@data('problem67')
+class Problem_67(Problem_18):
+    known_answer = 7273
+

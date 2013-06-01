@@ -6,7 +6,7 @@ import time
 import itertools
 
 class Problem(object):
-    known_answer = None
+    known_answer = True # So that empty implementations fail
 
     def solve(self):
         pass
