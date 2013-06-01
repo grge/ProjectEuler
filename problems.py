@@ -228,7 +228,7 @@ class Problem_28(Problem):
     def solve(self):
         return sum([(i+1)**2 * 4 - 6*i for i in range(2, 1001, 2)]) + 1
 
-class Problem_28(Problem):
+class Problem_63(Problem):
     known_answer = 49 
     def solve(self):
         count = 0
