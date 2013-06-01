@@ -228,6 +228,17 @@ class Problem_28(Problem):
     def solve(self):
         return sum([(i+1)**2 * 4 - 6*i for i in range(2, 1001, 2)]) + 1
 
+class Problem_28(Problem):
+    known_answer = 49 
+    def solve(self):
+        count = 0
+        for i in range(1, 10):
+            j = 1
+            while len(str(i**j)) == j:
+                count += 1
+                j += 1
+        return count
+
 @data('problem67')
 class Problem_67(Problem_18):
     known_answer = 7273
