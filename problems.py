@@ -202,14 +202,14 @@ class Problem_19(Problem):
                     start_day += days_in_month[month] + {True:1, False:0}[leap and month==1]
         return len(list(sunday_the_first_generator()))
 
-
 class Problem_20(Problem):
+    known_answer = 648
     def solve(self):
-        pass
+        return sum(int(c) for c in str(product(range(1, 101))))
 
 class Problem_21(Problem):
     def solve(self):
-        pass
+        pass 
 
 class Problem_22(Problem):
     def solve(self):
@@ -232,3 +232,19 @@ class Problem_28(Problem):
 class Problem_67(Problem_18):
     known_answer = 7273
 
+class Problem_92(Problem):
+    known_answer = 8581146
+    def solve(self):
+        def f(n):
+            yield n
+            while n != 89 and n != 1:
+                n = sum(map(lambda x : int(x)**2, str(n)))
+                yield n
+        count = 0
+        for i in range(1, int(1e7)):
+            for n in f(i):
+                pass
+            if n == 89:
+                count += 1
+
+        return count
