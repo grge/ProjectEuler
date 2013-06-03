@@ -1,6 +1,7 @@
 from lib import *
 from math import sqrt
 import re
+import collections
 
 
 class Problem_1(Problem):
@@ -228,6 +229,19 @@ class Problem_28(Problem):
     def solve(self):
         return sum([(i+1)**2 * 4 - 6*i for i in range(2, 1001, 2)]) + 1
 
+class Problem_35(Problem):
+    known_answer = 669171001 
+    def solve(self):
+        count = 0
+        s = sieve(int(1e06))
+        for p in s.prime_generator(lambda i, p: i < 1e05):
+            if not all(map(lambda x: x in [1,3,7,9], str(p))):
+                if all(map(lambda x: s.is_prime(int(''.join(x))), itertools.permutations(str(p)))):
+                    print p
+                    count += 1
+        return count
+                    
+
 class Problem_63(Problem):
     known_answer = 49 
     def solve(self):
@@ -239,9 +253,40 @@ class Problem_63(Problem):
                 j += 1
         return count
 
+class Problem_65(Problem):
+    known_answer = 272 
+    def solve(self):
+        def alg(i):
+            if i == 100: return False
+            if i == 1: return 'RR'
+            s = ['R', 'L'] if i % 2 else ['L', 'R']
+            s[1] *= 0 if (i+1) % 3 else (int((i+1) / 3) * 2 - 1)
+            return ''.join(s)
+        for sb in SternBrocot().generate_from_algorithm(alg):
+            pass
+        return sum(map(int,str(sb.numerator)))
+
+
 @data('problem67')
 class Problem_67(Problem_18):
     known_answer = 7273
+
+
+@data('problem79')
+class Problem_79(Problem):
+    known_answer = 73162890 
+    def solve(self):
+        '''Arange each number by their average position'''
+        numbers = re.split('\n', self.data.strip())
+        obs = [[][:] for i in range(10)]
+        for line in numbers:
+            for i, c in enumerate(line):
+                obs[int(c)].append(i)
+        return int(''.join([str(i) for i, v in 
+                              filter(lambda x: x[1], 
+                                sorted(enumerate(obs), 
+                                    key=lambda x: float(sum(x[1]))/len(x[1]) if x[1] else -1))]))
+
 
 class Problem_92(Problem):
     known_answer = 8581146

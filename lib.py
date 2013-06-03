@@ -46,6 +46,41 @@ def product(l):
 def choose(n, k):
     return product(range(1, n+1)) / (product(range(1, k+1))*product(range(1, n-k+1)))
 
+def mmul(A, B):
+    return [[sum(a*b for a, b in zip(row_a, col_b)) for col_b in zip(*B)] for row_a in A]
+
+class SternBrocot(object):
+    def __init__(self, init=None):
+        self.M = {'I': [[1,0],[0,1]], 'L': [[1,1],[0,1]], 'R': [[1,0],[1,1]]}
+        self.state = self.M['I']
+        if init:
+            self.grow_from_string(init)
+
+    def grow_from_string(self, string):
+        for c in string:
+            self.state = mmul(self.state, self.M[c])
+        return self
+
+    def generate_from_algorithm(self, algorithm):
+        i = 1
+        next_step = algorithm(i)
+        yield self
+        while next_step:
+            yield self.grow_from_string(next_step)
+            i += 1
+            next_step = algorithm(i)
+
+    @property
+    def numerator(self): 
+        return self.state[1][0]+self.state[1][1]
+    @property
+    def denominator(self): 
+        return self.state[0][0]+self.state[0][1]
+    def __float__(self):
+        return float(self.numerator) / self.denominator
+    def __str__(self):
+        return '%s/%s' % (self.numerator,self.denominator)
+
 class sieve(object):
     def __init__(self, n=1000):
         self.sieve = [False, False, True, True, False, True]
